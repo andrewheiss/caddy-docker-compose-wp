@@ -10,6 +10,6 @@ To keep WordPress PHP files outside of the static HTML folder, WordPress itself 
 
 This example creates three sites:
 
-- https://example.localhost
-- https://data.example.localhost
-- https://anothersite.localhost
+- https://example.localhost - A static site
+- https://data.example.localhost - Another static site
+- https://anothersite.localhost - A WordPress site
