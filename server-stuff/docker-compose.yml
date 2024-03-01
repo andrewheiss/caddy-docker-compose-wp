@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      # Map the local sites folder to the internal /var/www/html folder
+      # This lets you put any static sites here
+      - "../sites/:/var/www/html/"
+      # Map the local caddyfiles folder to the internal /etc/caddy folder
+      - "./caddyfiles/:/etc/caddy/"
+      
+      # Map the wordpress folder to /wordpress inside Caddy
+      # Technically this could also just go in ../sites, but I like treating 
+      # this folder more like a configuration folder and not having it be in 
+      # the same place as the static sites
+      - "./wordpress/:/wordpress/"
+
+      # Caddy needs to mount /data and /config for persisted data
+      - "./caddy/data/:/data/"
+      - "./caddy/config/:/config/"
+  
+  wordpress:
+    image: wordpress:php8.1-fpm-alpine
+    restart: unless-stopped
+    depends_on:
+      - wp-db
+    env_file:
+      - "./secrets/wordpress.env"
+    volumes:
+      # Map the wordpress folder to /wordpress inside the PHP container
+      # This normally would go to /var/html/www inside the container, but since 
+      # we're pointing it somewhere else in Caddy, it needs to match here
+      - "./wordpress:/wordpress"
+  
+  wp-db:
+    image: mariadb
+    restart: unless-stopped
+    env_file:
+      - "./secrets/db-wordpress.env"
+    volumes:
+      - "./db/db-wordpress:/var/lib/mysql"

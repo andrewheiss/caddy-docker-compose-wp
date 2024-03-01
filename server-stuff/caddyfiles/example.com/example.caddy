@@ -1,0 +1,5 @@
+example.localhost {
+	root * /var/www/html/example.com
+	encode gzip
+	file_server
+}

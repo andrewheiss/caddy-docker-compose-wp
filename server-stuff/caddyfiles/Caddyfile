@@ -1,0 +1,13 @@
+{
+	# E-mail for Let's Encrypt
+	email andrew@andrewheiss.com
+}
+
+# You can define all the server settings here in one big file, but I like to 
+# split them up into smaller files and folders (I have *a lot* of sites)
+
+# Sites at *.example.com
+import example.com/*.caddy
+
+# Sites at *.anothersite.com
+import anothersite.com/*.caddy
